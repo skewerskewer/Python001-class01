@@ -20,11 +20,6 @@ movie_list = []
 
 # Python 中使用 for in 形式的循环,Python使用缩进来做语句块分隔
 for tags in bs_info.find_all('div', attrs={'class':'movie-item-hover'},limit=10):
-    # for atag in tags.find_all('a'):
-    #     print(atag.get('href'))
-    #     # 获取所有链接
-    #     print(atag.find('span').text)
-    #     # 获取电影名字
     name = tags.find(class_='name').text
     movie_info = tags.find_all(class_='movie-hover-title')
     genre = movie_info[1].text.strip()
@@ -32,8 +27,8 @@ for tags in bs_info.find_all('div', attrs={'class':'movie-item-hover'},limit=10)
     movie_summary = {'name': name, 'genre': genre, 'time': time }
     movie_list.append(movie_summary)
 
-print(bs_info)
-print(bs_info.find_all('div', attrs={'class':'movie-item-hover'},limit=10))
+# print(bs_info)
+# print(bs_info.find_all('div', attrs={'class':'movie-item-hover'},limit=10))
 
 # print(movie_list)
 
