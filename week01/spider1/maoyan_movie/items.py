@@ -8,12 +8,12 @@
 import scrapy
 
 
-class DoubanmovieItem(scrapy.Item):
+class MaoyanmovieItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
 
     # 注释原有的pass
     # pass
-    title = scrapy.Field()
-    link = scrapy.Field()
-    content = scrapy.Field()
+    name = scrapy.Field()
+    genre = scrapy.Field()
+    time = scrapy.Field()
