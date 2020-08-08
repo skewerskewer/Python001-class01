@@ -7,6 +7,14 @@ py3以后新式类，所有类继承于object
 属性：类属性（内存里只保存一份），对象属性（每一个对象，不同的内存）
 
 
+__dict__:要是对象的话返回的是一个对象自身的实例属性、不包括类的属性；要是类的__dict__则不包括父类的属性，只包含自身类属性【方法、类变量】，不包括实例属性。正是这样、每个实例的实例属性才会互不影响。
+dir():返回的是对象的所有属性、包括父类的属性
+
+https://www.cnblogs.com/tangkaishou/p/11273605.html
+
+
+
+
 class Human(object):
     Live = True
 
@@ -203,6 +211,108 @@ me3.print_name()
 mappingproxy({'__module__': '__main__', '__init__': <function Kls3.__init__ at 0x7fdc800d03a0>, 'pre_name': <classmethod object at 0x7fdc800a9130>, 'print_name': <function Kls3.print_name at 0x7fdc800d0430>, '__dict__': <attribute '__dict__' of 'Kls3' objects>, '__weakref__': <attribute '__weakref__' of 'Kls3' objects>, '__doc__': None})
 
 ###############################################################################################################################################################
+在类中，可以对示例获取属性这一行为进行拦截，可以对指定属性进行特殊处理：
 
+__getattr__(): 只能拦截未定义属性
+__getattribute__(): 可以拦截全部属性，优先级比 getattr() 高
+
+
+class Human2(object):  
+    """
+    拦截已存在的属性
+    """  
+    def __init__(self):
+        self.age = 18
+    def __getattribute__(self,item):
+        print(f' __getattribute__ called item:{item}')
+        try:
+            return super().__getattribute__(item)
+        except Exception as e:
+            self.__dict__[item] = 100
+            return 100
+h1 = Human2()
+
+print(h1.age)
+# 存在的属性返回取值
+print(h1.noattr)
+
+>>> h1.age
+ __getattribute__ called item:age
+18
+>>> h1.__dict__
+ __getattribute__ called item:__dict__
+{'age': 18}
+>>> h1.noattr
+ __getattribute__ called item:noattr
+ __getattribute__ called item:__dict__
+100
+>>> h1.__dict__
+ __getattribute__ called item:__dict__
+{'age': 18, 'noattr': 100}
+>>> h1.noattr
+ __getattribute__ called item:noattr
+100
+>>> 
+
+
+class Human2(object):  
+    def __init__(self):
+        self.age = 18
+
+    def __getattr__(self, item): 
+        # 对指定属性做处理:fly属性返回'superman',其他属性返回None
+        self.item = item
+        if self.item == 'fly':
+            return 'superman'
+
+
+h1 = Human2()
+
+>>> h1 = Human2()
+>>> h1.age
+18
+>>> h1.__dict__
+{'age': 18}
+>>> h1.run
+>>> h1.__dict__
+{'age': 18, 'item': 'run'}
+>>> h1.fly
+'superman'
+>>> h1.__dict__
+{'age': 18, 'item': 'fly'}
+>>> h1.sit
+>>> h1.__dict__
+{'age': 18, 'item': 'sit'}
+
+
+
+class Human2(object):    
+    """
+    同时存在的调用顺序
+    """
+    def __init__(self):
+        self.age = 18
+
+    def __getattr__(self, item): 
+
+        print('Human2:__getattr__')
+        return 'Err 404 ,你请求的参数不存在'
+
+    def __getattribute__(self, item):
+        print('Human2:__getattribute__')
+        return super().__getattribute__(item)
+
+h1 = Human2()
+
+# 如果同时存在，执行顺序是 __getattribute__ > __getattr__ > __dict__
+
+>>> h1 = Human2()
+>>> h1.age
+Human2:__getattribute__
+18
+>>> h1.noattr
+Human2:__getattribute__
+Human2:__getattr__
+'Err 404 ,你请求的参数不存在'
 
 ###############################################################################################################################################################
