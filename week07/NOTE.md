@@ -7,8 +7,20 @@ py3以后新式类，所有类继承于object
 属性：类属性（内存里只保存一份），对象属性（每一个对象，不同的内存）
 
 
+class Human(object):
+    Live = True
+
+    def __init__(self, name):
+        self.name = name
+
+man = Human('Adam')
+woman = Human ('Eve')
+
+
 >>> dir(Human)
 ['Live', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
+
+
 >>> Human.__dict__
 mappingproxy({'__module__': '__main__', 'Live': True, '__init__': <function Human.__init__ at 0x7fdd482541f0>, '__dict__': <attribute '__dict__' of 'Human' objects>, '__weakref__': <attribute '__weakref__' of 'Human' objects>, '__doc__': None})
 
@@ -38,5 +50,13 @@ TypeError: __init__() missing 1 required positional argument: 'name'
 >>> man.__class__('Adam2')
 <__main__.Human object at 0x7fdd4819ff40>
   
-  
+ 
+>>> type(man)
+<class '__main__.Human'>
+>>> type(Human)
+<class 'type'>
+>>> type(object)
+<class 'type'>
+>>> object.mro()
+[<class 'object'>]
 
