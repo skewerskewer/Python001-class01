@@ -92,7 +92,7 @@ class Human2(object):
 mappingproxy({'__module__': '__main__', '_age': 0, '_Human2__fly': False, '__dict__': <attribute '__dict__' of 'Human2' objects>, '__weakref__': <attribute '__weakref__' of 'Human2' objects>, '__doc__': None})
 
 
-# 显示object类的所有子类
+#显示object类的所有子类
 print( ().__class__.__bases__[0].__subclasses__() )
 
 
@@ -114,7 +114,7 @@ print( ().__class__.__bases__[0].__subclasses__() )
 ###############################################################################################################################################################
 类方法
 
-# 让实例的方法成为类的方法
+#让实例的方法成为类的方法
 class Kls1(object):
     bar = 1
     def foo(self):
@@ -177,7 +177,7 @@ class Kls2():
 me = Kls2('wilson','yin')
 me.print_name()
 
-# 输入改为  wilson-yin
+#输入改为  wilson-yin
 
 解决方法1: 修改 __init__()
 解决方法2: 增加 __new__() 构造函数
@@ -233,7 +233,7 @@ class Human2(object):
 h1 = Human2()
 
 print(h1.age)
-# 存在的属性返回取值
+#存在的属性返回取值
 print(h1.noattr)
 
 >>> h1.age
@@ -304,7 +304,7 @@ class Human2(object):
 
 h1 = Human2()
 
-# 如果同时存在，执行顺序是 __getattribute__ > __getattr__ > __dict__
+#如果同时存在，执行顺序是 __getattribute__ > __getattr__ > __dict__
 
 >>> h1 = Human2()
 >>> h1.age
