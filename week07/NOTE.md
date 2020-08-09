@@ -322,4 +322,109 @@ Human2:__getattribute__
 Human2:__getattr__
 'Err 404 ,你请求的参数不存在'
 ```
-##################################################################################################
+#################################################################################################
+# Metaclass
+
+元类：
+
+元类是创建类的类，是类的模板
+元类是用来控制如何创建类的，正如类是创建对象的模板一样
+元类的实例为类
+
+https://realpython.com/python-metaclasses/
+
+
+
+```python
+# 使用type元类创建类
+def hi():
+    print('Hi metaclass')
+
+# type的三个参数:类名、父类的元组、类的成员
+Foo = type('Foo',(),{'say_hi':hi})
+foo = Foo
+foo.say_hi()
+# 元类type首先是一个类，所以比类工厂的方法更灵活多变，可以自由创建子类来扩展元类的能力
+
+
+
+
+def pop_value(self,dict_value):
+    for key in self.keys():
+        if self.__getitem__(key) == dict_value:
+            self.pop(key)
+            break
+
+# 元类要求,必须继承自type    
+class DelValue(type):
+    # 元类要求，必须实现new方法
+    def __new__(cls,name,bases,attrs):
+        attrs['pop_value'] = pop_value
+        return type.__new__(cls,name,bases,attrs)
+ 
+class DelDictValue(dict,metaclass=DelValue):
+    # python2的用法，在python3不支持
+    # __metaclass__ = DelValue
+    pass
+
+d = DelDictValue()
+d['a']='A'
+d['b']='B'
+d['c']='C'
+d.pop_value('C')
+for k,v in d.items():
+    print(k,v)
+```
+#################################################################################################
+# 抽象基类：
+
+抽象基类（abstract base class， ABC）用来确保派生类实现了基类中的特定方法。
+使用抽象基类的好处：
+避免继承错误，使类层次易于理解和维护
+抽象基类是无法实例化的
+
+```python
+from abc import ABCMeta, abstractmethod
+class Base(metaclass=ABCMeta):
+    @abstractmethod
+    def foo(self):
+        pass
+    @abstractmethod
+    def bar(self):
+        pass
+
+class Concrete(Base):
+    def foo(self):
+        pass
+
+c = Concrete() # TypeError
+
+```
+
+# Mixin
+
+在程序运行过程中，重定义类的继承，即动态继承。好处：
+
+可以在不修改任何源代码的情况下，对已有类进行扩展
+进行组件的划分
+
+```python
+
+class Displayer():
+    def display(self, message):
+        print(message)
+
+class LoggerMixin():
+    def log(self, message, filename='logfile.txt'):
+        with open(filename, 'a') as fh:
+            fh.write(message)
+
+    def display(self, message):
+        super(LoggerMixin, self).display(message)
+        self.log(message)
+
+class MySubClass(LoggerMixin, Displayer):
+    def log(self, message):
+        super().log(message, filename='subclasslog.txt')
+
+```
