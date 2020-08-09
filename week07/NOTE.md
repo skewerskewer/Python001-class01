@@ -426,5 +426,11 @@ class LoggerMixin():
 class MySubClass(LoggerMixin, Displayer):
     def log(self, message):
         super().log(message, filename='subclasslog.txt')
+        
+>>> subclass = MySubClass()
+>>> MySubClass.mro()
+[<class '__main__.MySubClass'>, <class '__main__.LoggerMixin'>, <class '__main__.Displayer'>, <class 'object'>]
+>>> subclass.display("This string will be shown and logged in subclasslog.txt")
+This string will be shown and logged in subclasslog.txt
 
 ```
