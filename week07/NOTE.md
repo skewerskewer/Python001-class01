@@ -214,6 +214,10 @@ mappingproxy({'__module__': '__main__', '__init__': <function Kls3.__init__ at 0
 
 ```
 ###############################################################################
+
+https://stackoverflow.com/questions/3278077/difference-between-getattr-vs-getattribute
+
+
 在类中，可以对示例获取属性这一行为进行拦截，可以对指定属性进行特殊处理：
 
 __getattr__(): 只能拦截未定义属性
