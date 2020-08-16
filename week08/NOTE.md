@@ -241,7 +241,7 @@ print( var() )
 # B
 print (dir (__builtins__) )
 
-```
+```python
 • 参数
 先传args, 再穿kargs
 
